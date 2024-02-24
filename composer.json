@@ -37,6 +37,10 @@
         }
     },
     "scripts": {
+        "sail-up": [
+            "alias sail='[ -f sail ] && bash sail || bash vendor/bin/sail'",
+            "sail up && npm run dev"
+        ],
         "post-autoload-dump": [
             "Illuminate\\Foundation\\ComposerScripts::postAutoloadDump",
             "@php artisan package:discover --ansi"
