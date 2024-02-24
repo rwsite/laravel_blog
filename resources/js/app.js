@@ -1,8 +1,19 @@
+//default
 import './bootstrap';
 import '../css/app.css';
 
+// my template
+import '../css/blog.css';
+// import '../sass/main.sass'
+
+import.meta.glob([
+    '../images/**',
+    '../fonts/**',
+]);
+
 import { createApp, h } from 'vue';
 import { createInertiaApp } from '@inertiajs/vue3';
+// @see https://laravel.com/docs/10.x/vite#working-with-stylesheets
 import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers';
 import { ZiggyVue } from '../../vendor/tightenco/ziggy/dist/vue.m';
 
