@@ -6,6 +6,7 @@ use App\Models\Post;
 use App\Models\PostCategory;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Storage;
 use Inertia\Response;
 use Inertia\ResponseFactory;
@@ -15,10 +16,11 @@ class PostController extends Controller
 
     public function lasted(): Response|ResponseFactory
     {
-        $posts = Post::latest()->take(8)->with('categories')->get();
-        // Надо менять на коллекцию?
-        //$posts = Post::orderBy('created_at','desc')->take(4)->get();
-        //$posts = PostResource::collection($posts)->resolve();
+        $posts = Cache::remember('lasted_posts', 60 * 60 * 3, function () {
+            // Надо ли менять на коллекцию? Вроде и так работает
+            return Post::latest()->take(6)->with('categories')->get();
+        });
+
         return Inertia('Index', compact('posts'));
     }
 
