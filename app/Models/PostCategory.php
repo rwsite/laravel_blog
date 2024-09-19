@@ -11,6 +11,8 @@ class PostCategory extends Model
     use HasFactory;
     use SoftDeletes;
 
+    protected $table = 'post_categories';
+
     protected $guarded = [];
     protected $fillable = [
         'title', 'slug', 'content', 'image', 'parent_id',

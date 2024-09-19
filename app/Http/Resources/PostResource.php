@@ -21,7 +21,7 @@ class PostResource extends JsonResource
             'slug'       => $this->slug,
             'content'    => $this->content,
             'image'      => $this->image,
-            'categories' => $this->categories(),
+            'categories' => PostCategoryResource::collection($this->whenLoaded('post_categories')),
         ];
     }
 }

@@ -1,9 +1,11 @@
 <script>
 import {Head, Link} from '@inertiajs/vue3';
 import BlogGuestLayout from "@/Layouts/BlogGuestLayout.vue";
+import Pagination from "@/Components/Pagination.vue";
 
 export default {
     components: {
+        Pagination,
         BlogGuestLayout,
         Head,
         Link,
@@ -13,12 +15,15 @@ export default {
             type: String,
             default: 'Статьи'
         },
-        posts: Object,
+        posts: {
+            type: Object,
+            required: true
+        },
         categories: Object
     },
     methods: {
         even(posts) {
-            console.log(posts)
+            console.log(posts);
             return posts.filter(post => post % 2 === 0)
         }
     },
@@ -47,7 +52,7 @@ export default {
                 <div class="tasks grid gap-4 grid-cols-1 lg:grid-cols-2 gap-x-10 gap-y-14 xl:gap-y-20 mt-12 md:mt-20">
 
                     <!-- содержимое -->
-                    <div v-for="post in posts"
+                    <div v-for="post in posts.data"
                          :key="post.id" class="tasks-card flex flex-col rounded-3xl md:rounded-[40px] bg-card">
 
                         <div
@@ -83,31 +88,8 @@ export default {
 
                 </div>
 
-                <nav class="mt-4">
-                    <ul class="flex flex-wrap items-center justify-center gap-3">
-                        <li class="active">
-                            <a class="block p-3 text-sm font-black leading-none text-pink"
-                               href="#"
-                            >
-                                1
-                            </a>
-                        </li>
-                        <li class="">
-                            <a class="block p-3 text-sm font-black leading-none text-white hover:text-pink"
-                               href="#"
-                            >
-                                2
-                            </a>
-                        </li>
-                        <li class="">
-                            <a class="block p-3 text-sm font-black leading-none text-white hover:text-pink"
-                               href="#"
-                            >
-                                3
-                            </a>
-                        </li>
-                    </ul>
-                </nav>
+                <Pagination :pagination="posts.links"/>
+
             </div>
         </main>
     </BlogGuestLayout>

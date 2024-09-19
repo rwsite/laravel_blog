@@ -27,17 +27,17 @@ class PostController extends Controller
     /**
      * Все посты (unused)
      */
-    public function index(?PostCategory $category): Response
+    public function index(?PostCategory $category = null): Response
     {
         $category = null;
         if (!empty($category)) {
-            $posts = Post::where('category_id', $category->id)->all()->take(8)->with('categories')->get();
+            $posts = Post::where('category_id', $category->id)->with('categories')->paginate('10')->getCollection();
         } else {
-            $posts = Post::all();
+            $posts = Post::query()->with('categories')->paginate('10');
         }
         $categories = PostCategory::all('title');
-
-        return Inertia('Post/List', compact('posts', 'category', 'categories'));
+        
+        return Inertia('Post/List', compact('posts', 'categories', 'category'));
     }
 
     public function show(Post $post): Response|ResponseFactory
