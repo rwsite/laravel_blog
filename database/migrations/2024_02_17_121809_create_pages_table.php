@@ -15,6 +15,7 @@ return new class extends Migration {
             $table->softDeletes();
 
             $table->string( 'title', 280 );
+            $table->string('slug', 80)->unique();
             $table->string( 'thumbnail', 500 )->nullable();
             $table->longText( 'content' )->nullable();
         } );

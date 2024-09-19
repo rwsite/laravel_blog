@@ -3,100 +3,126 @@
 namespace App\Http\Controllers;
 
 use App\Models\Post;
+use App\Models\PostCategory;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Storage;
+use Inertia\Response;
+use Inertia\ResponseFactory;
 
-class PostController extends Controller {
+class PostController extends Controller
+{
+
+    public function lasted(): Response|ResponseFactory
+    {
+        $posts = Post::latest()->take(8)->with('categories')->get();
+        // Надо менять на коллекцию?
+        //$posts = Post::orderBy('created_at','desc')->take(4)->get();
+        //$posts = PostResource::collection($posts)->resolve();
+        return Inertia('Index', compact('posts'));
+    }
+
     /**
-     * Отображает список ресурсов
-     *
-     * @return Response
+     * Все посты (unused)
      */
-    public function index() {
-        $posts = Post::all();
+    public function index(?PostCategory $category): Response
+    {
+        $category = null;
+        if (!empty($category)) {
+            $posts = Post::where('category_id', $category->id)->all()->take(8)->with('categories')->get();
+        } else {
+            $posts = Post::all();
+        }
+        $categories = PostCategory::all('title');
 
-        return view( 'posts.index', compact( 'posts' ) );
+        return Inertia('Post/List', compact('posts', 'category', 'categories'));
+    }
+
+    public function show(Post $post): Response|ResponseFactory
+    {
+        return Inertia('Post/Show', compact('post'));
     }
 
     /**
      * Помещает созданный ресурс в хранилище
-     *
-     * @param Request $request
-     *
-     * @return Response
      */
-    public function store( Request $request ) {
-        $request->validate( [
-            'title'       => 'required',
-            'description' => 'required',
-        ] );
+    public function store(Request $request): RedirectResponse
+    {
+        $request->validate([
+            'title'   => 'required',
+            'content' => 'required',
+        ]);
 
-        Post::create( $request->all() );
+        $post = new Post();
+        $post->author_id = rand(1, 4);
+        $post->title = $request->input('title');
+        $post->content = $request->input('content');
+        $image = $request->file('image');
+        if ($image) {
+            $path = Storage::putFile('public', $image);
+            $post->image = Storage::url($path);
+        }
+        $post->save();
 
-        return redirect()->route( 'posts.index' )->with( 'success', 'Post created successfully.' );
+        return redirect()->back();
     }
 
     /**
      * Выводит форму для создания нового ресурса
      *
-     * @return Response
      */
-    public function create() {
-        return view( 'posts.create' );
+    public function create()
+    {
+        return Inertia('Post/Create');
     }
 
-    /**
-     * Отображает указанный ресурс.
-     *
-     * @param Post $post
-     *
-     * @return Response
-     */
-    public function show( Post $post ) {
-        return Inertia( 'Post/Show', compact( 'post' ) );
-    }
 
     /**
      * Выводит форму для редактирования указанного ресурса
      *
-     * @param Post $post
-     *
-     * @return Response
+     * @param  Post  $post
+     * @return Response|ResponseFactory
      */
-    public function edit( Post $post ) {
-        return view( 'posts.edit', compact( 'post' ) );
+    public function edit(Post $post)
+    {
+        return Inertia('Post.Edit', compact('post'));
     }
 
     /**
      * Обновляет указанный ресурс в хранилище
      *
-     * @param Request $request
-     * @param Post $post
-     *
-     * @return Response
+     * @param  Request  $request
+     * @param  Post  $post
      */
-    public function update( Request $request, Post $post ) {
-        $request->validate( [
-            'title'       => 'required',
-            'description' => 'required',
-        ] );
+    public function update(Request $request, Post $post)
+    {
+        $request->validate([
+            'title'   => 'required',
+            'content' => 'required',
+        ]);
 
-        $post->update( $request->all() );
-
-        return redirect()->route( 'posts.index' )->with( 'success', 'Post updated successfully' );
+        $post->update($request->all());
+        return redirect()->back();
     }
 
     /**
      * Удаляет указанный ресурс из хранилища
      *
-     * @param Post $post
-     *
-     * @return Response
+     * @param  Post  $post
+     * @return RedirectResponse
      */
-    public function destroy( Post $post ) {
-        $post->delete();
+    public function destroy(Request $request)
+    {
+        if ($request->has('id')) {
+            abort(404);
+        }
 
-        return redirect()->route( 'posts.index' )
-                         ->with( 'success', 'post deleted successfully' );
+        $post = Post::findOrFail($request->input('id'));
+        if ($post && $request->user()->can('update-post', $post)) {
+            $post->delete();
+            return redirect()->back();
+        }
+
+        abort(403);
     }
 }

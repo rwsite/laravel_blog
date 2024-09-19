@@ -17,10 +17,11 @@ class PostFactory extends Factory {
      */
     public function definition(): array {
         return [
-            'title'     => $title = fake()->name(),
-            'slug'      => Str::slug( $title ),
-            'thumbnail' => null,
-            'content'   => fake()->text(),
+            'title'        => $title = $this->faker->sentence(2),
+            'slug'         => Str::slug($title),
+            'image'        => $this->faker->imageUrl(),
+            'content'      => fake()->realText(rand(400, 500)),
+            'published_by' => rand(1, 10),
         ];
     }
 }

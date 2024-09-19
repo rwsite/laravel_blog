@@ -15,13 +15,15 @@ return new class extends Migration {
             $table->softDeletes();
 
             $table->string( 'title', 280 );
-            $table->string( 'slug' )->unique();
-            $table->string( 'thumbnail', 500 )->nullable();
+            $table->string('slug', 120)->unique();
+            $table->string('image', 500)->nullable();
             $table->longText( 'content' );
-            $table->foreignId( 'post_category_id' )
-                  ->nullable()
-                  ->constrained()
-                  ->nullOnDelete();
+            $table->unsignedBigInteger('published_by')->nullable();
+            $table->foreign('published_by')
+                ->references('id')
+                ->on('users')
+                ->cascadeOnDelete()
+                ->cascadeOnUpdate();
         } );
     }
 

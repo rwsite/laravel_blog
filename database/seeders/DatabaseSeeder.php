@@ -13,12 +13,16 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        User::factory( 10 )->create();
-        $this->call( PostSeeder::class );
+        User::factory(15)->create();
+        $this->command->info('Таблица пользователей загружена данными!');
 
-        // \App\Models\User::factory()->create([
-        //     'name' => 'Test User',
-        //     'email' => 'test@example.com',
-        // ]);
+        $this->call(PostCategorySeeder::class);
+        $this->command->info('Таблица категорий загружена данными!');
+
+        $this->call( PostSeeder::class );
+        $this->command->info('Таблица постов загружена данными!');
+
+        $this->call(CommentSeeder::class);
+        $this->command->info('Таблица комментариев загружена данными!');
     }
 }

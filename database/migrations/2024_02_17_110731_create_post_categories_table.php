@@ -11,9 +11,14 @@ return new class extends Migration {
     public function up(): void {
         Schema::create( 'post_categories', function ( Blueprint $table ) {
             $table->id();
-            $table->timestamps();
+
             $table->string( 'title', 280 );
-            $table->string( 'description', 500 )->nullable();
+            $table->string('slug', 120)->unique();
+            $table->string('content', 500)->nullable();
+            $table->string('image', 500)->nullable();
+            $table->foreignId('parent_id')->nullable()->constrained('post_categories');
+
+            $table->timestamps();
             $table->softDeletes();
         } );
     }
