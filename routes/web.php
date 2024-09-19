@@ -2,7 +2,6 @@
 
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\ProfileController;
-use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -18,19 +17,22 @@ use Inertia\Inertia;
 |
 */
 
-Route::get('/', function () {
+/*Route::get('/', function () {
     return Inertia::render( 'Index', [
         'canLogin' => Route::has('login'),
         'canRegister' => Route::has('register'),
         'laravelVersion' => Application::VERSION,
         'phpVersion' => PHP_VERSION,
     ]);
-});
+});*/
 
 
-Route::resource( 'posts', PostController::class );
+Route::get('/', [PostController::class, 'lasted'])->name('index');
+Route::get('posts', [PostController::class, 'index'])->name('post.list');
+Route::get('posts/{post}', [PostController::class, 'show'])->name('post.show');
 
-Route::get('/dashboard', function () {
+
+Route::get('dashboard', function () {
     return Inertia::render('Dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 

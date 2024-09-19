@@ -1,8 +1,51 @@
-<script setup>
-import { computed } from 'vue';
-import { Link } from '@inertiajs/vue3';
+<script>
+import {Head, Link} from '@inertiajs/vue3';
+import BlogGuestLayout from "@/Layouts/BlogGuestLayout.vue";
+
+
+export default {
+    components: {
+        BlogGuestLayout,
+        Head,
+        Link,
+    },
+    props: {
+        post: Object,
+        title: {
+            type: String,
+            default: 'Страница статьи'
+        },
+    },
+    methods: {},
+};
 </script>
 
 <template>
+
+    <Head :title="title"/>
+
+    <BlogGuestLayout>
+        <main class="py-16 lg:py-20">
+            <div class="container">
+                <img alt="" class="w-full rounded-xl my-8" src="../../../images/article_demo.jpg">
+
+                <div class="prose prose-lg min-w-full prose-img:rounded-xl prose-invert">
+                    <h1 class="text-[26px] sm:text-xl xl:text-[48px] 2xl:text-2xl font-black">
+                        {{ post.title }}
+                    </h1>
+                    <div class="flex flex-wrap gap-3 mt-7">
+                        <a class="grow xs:grow-0 py-2 px-4 rounded-[32px] bg-[#2A2B4E] text-white no-underline text-xxs sm:text-xs font-semibold whitespace-nowrap"
+                           href="#">
+                            {{ post.category }}
+                        </a>
+                    </div>
+
+                    <div class="mt-4 break-words">
+                        {{ post.content }}
+                    </div>
+                </div>
+            </div>
+        </main>
+    </BlogGuestLayout>
 
 </template>

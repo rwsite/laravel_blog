@@ -1,6 +1,7 @@
 <script setup>
 import ApplicationLogo from '@/Components/ApplicationLogo.vue';
-import { Link } from '@inertiajs/vue3';
+import {Link} from '@inertiajs/vue3';
+import NavLink from "@/Components/NavLink.vue";
 </script>
 
 <template>
@@ -8,26 +9,24 @@ import { Link } from '@inertiajs/vue3';
         <div class="container">
             <div class="header-inner flex items-center justify-between lg:justify-start">
                 <div class="header-logo shrink-0">
-                    <a href="index.html" rel="home">
-                        <img alt="CutCode"
-                             class="w-[148px] md:w-[201px] h-[36px] md:h-[50px] inline-block"
-                             src="../../images/nav/logo.svg"
-                        >
-                    </a>
+                    <Link :href="route('index')" rel="home">
+                        <ApplicationLogo></ApplicationLogo>
+                    </Link>
                 </div><!-- /.header-logo -->
 
                 <div class="header-menu grow hidden lg:flex items-center ml-8 mr-8 gap-8">
                     <nav class="2xl:flex gap-8">
-                        <a href="articles.html"
-                           class="ml-4 mr-4 text-white hover:text-pink"
+                        <NavLink
+                            :href="route('post.list')"
+                            class="ml-4 mr-4 text-white hover:text-pink"
                         >
-                            Статьи
-                        </a>
+                            Все статьи
+                        </NavLink>
                     </nav>
                 </div><!-- /.header-menu -->
 
                 <div class="header-actions flex items-center gap-3 md:gap-5 z-[9999]">
-                    <a href="login.html" class="profile hidden xs:flex items-center">
+                    <NavLink :href="route('login')" class="profile hidden xs:flex items-center">
                         <svg aria-hidden="true" class="profile-icon w-8 h-8 text-purple"
                              height="1em" preserveAspectRatio="xMidYMid meet" role="img" viewBox="0 0 32 32" width="1em"
                              xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
@@ -37,7 +36,7 @@ import { Link } from '@inertiajs/vue3';
                                 fill="currentColor"/>
                         </svg>
                         <span class="profile-text relative ml-2 text-white text-xxs md:text-xs font-bold">Войти</span>
-                    </a>
+                    </NavLink>
                 </div><!-- /.header-actions -->
             </div><!-- /.header-inner -->
         </div><!-- /.container -->
@@ -49,12 +48,12 @@ import { Link } from '@inertiajs/vue3';
         <div class="container">
             <div class="flex flex-wrap lg:flex-nowrap items-center">
                 <div class="footer-logo order-0 basis-full sm:basis-1/2 lg:basis-1/3 shrink-0 text-center sm:text-left">
-                    <a href="index.html" rel="home">
+                    <Link :href="route('index')" rel="home">
                         <img alt="CutCode"
                              class="w-[148px] md:w-[201px] h-[36px] md:h-[50px] inline-block"
                              src="../../images/nav/logo.svg"
                         >
-                    </a>
+                    </Link>
                 </div><!-- /.footer-logo -->
 
                 <div class="footer-copyright order-2 lg:order-1 basis-full lg:basis-1/3 mt-8 lg:mt-0">
@@ -65,17 +64,17 @@ import { Link } from '@inertiajs/vue3';
 
                 <div class="footer-social order-1 lg:order-2 basis-full sm:basis-1/2 lg:basis-1/3 mt-8 sm:mt-0">
                     <div class="flex flex-wrap items-center justify-center sm:justify-end space-x-6">
-                        <a class="inline-flex items-center text-white hover:text-pink"
+                        <Link class="inline-flex items-center text-white hover:text-pink"
                            href="#" rel="nofollow noopener"
                            target="_blank">
                             <img alt="YouTube" class="h-5 lg:h-6" src="../../images/icons/youtube.svg">
                             <span class="ml-2 lg:ml-3 text-xxs font-semibold">YouTube</span>
-                        </a>
-                        <a href="#" class="inline-flex items-center text-white hover:text-pink"
+                        </Link>
+                        <Link class="inline-flex items-center text-white hover:text-pink" href="#"
                            rel="nofollow noopener" target="_blank">
                             <img alt="Telegram" class="h-5 lg:h-6" src="../../images/icons/telegram.svg">
                             <span class="ml-2 lg:ml-3 text-xxs font-semibold">Telegram</span>
-                        </a>
+                        </Link>
                     </div>
                 </div><!-- /.footer-social -->
             </div>

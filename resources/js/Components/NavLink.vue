@@ -1,6 +1,6 @@
 <script setup>
-import { computed } from 'vue';
-import { Link } from '@inertiajs/vue3';
+import {computed} from 'vue';
+import {Link} from '@inertiajs/vue3';
 
 const props = defineProps({
     href: {
@@ -11,6 +11,7 @@ const props = defineProps({
         type: Boolean,
     },
 });
+
 
 const classes = computed(() =>
     props.active
