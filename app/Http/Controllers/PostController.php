@@ -31,12 +31,12 @@ class PostController extends Controller
     {
         $category = null;
         if (!empty($category)) {
-            $posts = Post::where('category_id', $category->id)->with('categories')->paginate('10')->getCollection();
+            $posts = Post::where('category_id', $category->id)->with('categories')->paginate('6')->getCollection();
         } else {
-            $posts = Post::query()->with('categories')->paginate('10');
+            $posts = Post::latest('created_at')->with('categories')->paginate('6');
         }
         $categories = PostCategory::all('title');
-        
+
         return Inertia('Post/List', compact('posts', 'categories', 'category'));
     }
 
