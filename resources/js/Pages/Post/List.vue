@@ -23,7 +23,6 @@ export default {
     },
     methods: {
         even(posts) {
-            console.log(posts);
             return posts.filter(post => post % 2 === 0)
         }
     },
@@ -43,7 +42,7 @@ export default {
                 <div>
                     <div class="flex flex-wrap gap-3 mt-7">
                         <a v-for="category in categories" class="bg-pink grow xs:grow-0 py-2 px-4 rounded-[32px] bg-[#2A2B4E] text-white no-underline text-xxs sm:text-xs font-semibold whitespace-nowrap"
-                           href="#">
+                           :href="route('post.list', category.id)">
                             {{ category.title }}
                         </a>
                     </div>
@@ -69,7 +68,7 @@ export default {
                             <div class="mt-auto">
                                 <div v-for="category in post.categories"
                                      class="flex flex-wrap gap-3 mt-7">
-                                    <a :href="route('post.list')"
+                                    <a :href="route('post.list', category.id)"
                                        class="grow xs:grow-0 py-2 px-4 rounded-[32px] bg-[#2A2B4E] text-white no-underline text-xxs sm:text-xs font-semibold whitespace-nowrap">
                                         {{ category.title }}
                                     </a>

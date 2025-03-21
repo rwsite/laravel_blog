@@ -42,6 +42,7 @@ class PostController extends Controller
 
     public function show(Post $post): Response|ResponseFactory
     {
+        $post = Post::first()->with('categories')->find($post->id);
         return Inertia('Post/Show', compact('post'));
     }
 
@@ -56,7 +57,7 @@ class PostController extends Controller
         ]);
 
         $post = new Post();
-        $post->author_id = rand(1, 4);
+        $post->published_by = rand(1, 4);
         $post->title = $request->input('title');
         $post->content = $request->input('content');
         $image = $request->file('image');

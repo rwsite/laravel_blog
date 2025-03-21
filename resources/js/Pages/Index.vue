@@ -17,7 +17,6 @@ export default {
     },
     methods: {
         even(posts) {
-            console.log(posts)
             return posts.filter(post => post % 2 === 0)
         }
     },
